@@ -11,8 +11,10 @@ class SearchCubit extends Cubit<SearchState> {
       : super(SearchInitial());
 
   final FetchGitRepositoriesUseCase fetchGitRepositoriesUseCase;
+  static const int _itemsCount = 15;
 
-  Future<void> fetchGitRepositories(String query, int itemsCount) async {
+  Future<void> fetchGitRepositories(
+      {required String query, int itemsCount = _itemsCount}) async {
     GitRepositoryResponse response = await fetchGitRepositoriesUseCase
         .call(GitRepoParams(query: query, itemsCount: itemsCount));
     print(response.totalCount);
