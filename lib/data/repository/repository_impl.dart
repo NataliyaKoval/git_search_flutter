@@ -11,7 +11,7 @@ class RepositoryImpl implements Repository {
 
   @override
   Future<GitRepositoryResponseEntity> fetchGitRepositories(
-      {required String query, required int itemsCount}) async {
-    return await restApiClient.fetchRepository(query, itemsCount);
+      {required String query, required int itemsCount, required int page}) async {
+    return await restApiClient.fetchRepository(query, itemsCount, page);
   }
 }

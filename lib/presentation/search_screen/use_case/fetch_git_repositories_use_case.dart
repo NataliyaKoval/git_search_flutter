@@ -15,6 +15,7 @@ class FetchGitRepositoriesUseCase
     return await repository.fetchGitRepositories(
       query: params.query,
       itemsCount: params.itemsCount,
+      page: params.page,
     );
   }
 }
@@ -23,8 +24,10 @@ class GitRepoParams {
   const GitRepoParams({
     required this.query,
     required this.itemsCount,
+    required this.page,
   });
 
   final String query;
   final int itemsCount;
+  final int page;
 }

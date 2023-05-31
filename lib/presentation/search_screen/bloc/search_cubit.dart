@@ -12,12 +12,38 @@ class SearchCubit extends Cubit<SearchState> {
 
   final FetchGitRepositoriesUseCase fetchGitRepositoriesUseCase;
   static const int _itemsCount = 15;
+  int page = 1;
+  bool isLastPage = false;
+  List<GitRepository> allGitRepos = <GitRepository>[];
+  bool isFutureRunning = false;
 
-  Future<void> fetchGitRepositories(
-      {required String query, int itemsCount = _itemsCount}) async {
-    GitRepositoryResponse response = await fetchGitRepositoriesUseCase
-        .call(GitRepoParams(query: query, itemsCount: itemsCount));
-    print(response.totalCount);
-    print(response.items.length);
+  Future<void> fetchGitRepositories(String query) async {
+    if (isFutureRunning) {
+      return;
+    }
+
+    isFutureRunning = true;
+
+    try {
+      GitRepositoryResponse response =
+          await fetchGitRepositoriesUseCase.call(GitRepoParams(
+        query: query,
+        itemsCount: _itemsCount,
+        page: page,
+      ));
+      List<GitRepository> gitRepos = response.items;
+      if (response.incompleteResults == true) {
+        isLastPage = true;
+      }
+      allGitRepos.addAll(gitRepos);
+      page++;
+      emit(
+        SearchLoaded(gitRepositories: allGitRepos, isLastPage: isLastPage),
+      );
+    } catch (e) {
+      print(e);
+    } finally {
+      isFutureRunning = false;
+    }
   }
 }

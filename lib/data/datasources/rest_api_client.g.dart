@@ -24,11 +24,13 @@ class _RestApiClient implements RestApiClient {
   Future<GitRepositoryResponseEntity> fetchRepository(
     query,
     itemsCount,
+    page,
   ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
       r'q': query,
       r'per_page': itemsCount,
+      r'page': page,
     };
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};

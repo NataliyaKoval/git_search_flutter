@@ -11,5 +11,8 @@ abstract class RestApiClient {
 
   @GET('/search/users')
   Future<GitRepositoryResponseEntity> fetchRepository(
-      @Query('q') String query, @Query('per_page') int itemsCount);
+    @Query('q') String query,
+    @Query('per_page') int itemsCount,
+    @Query('page') int page,
+  );
 }

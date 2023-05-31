@@ -8,7 +8,9 @@ class SearchInitial extends SearchState {}
 class SearchLoaded extends SearchState {
   SearchLoaded({
     required this.gitRepositories,
+    required this.isLastPage,
   });
 
   final List<GitRepository> gitRepositories;
+  final bool isLastPage;
 }
