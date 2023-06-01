@@ -5,4 +5,5 @@ class ImageAssets {
 
   static const String search = _root + 'search' + _svg;
   static const String close = _root + 'close' + _svg;
+  static const String star = _root + 'star' + _svg;
 }

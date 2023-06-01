@@ -23,7 +23,7 @@ class SearchCubit extends Cubit<SearchState> {
     }
 
     isFutureRunning = true;
-
+    emit(SearchLoading());
     try {
       GitRepositoryResponse response =
           await fetchGitRepositoriesUseCase.call(GitRepoParams(
@@ -51,7 +51,7 @@ class SearchCubit extends Cubit<SearchState> {
 
     try {
       GitRepositoryResponse response =
-      await fetchGitRepositoriesUseCase.call(GitRepoParams(
+          await fetchGitRepositoriesUseCase.call(GitRepoParams(
         query: query,
         itemsCount: _itemsCount,
         page: page,

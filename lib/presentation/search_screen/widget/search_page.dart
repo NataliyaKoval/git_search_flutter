@@ -79,8 +79,10 @@ class _SearchPageState extends State<SearchPage> {
                             ),
                           ],
                         );
-                      } else {
+                      } else if (state is SearchLoading) {
                         return const CircularProgressIndicator();
+                      } else {
+                        return Container();
                       }
                     },
                   ),

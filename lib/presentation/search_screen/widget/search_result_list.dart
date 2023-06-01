@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:git_search/domain/models/git_repository.dart';
+import 'package:git_search/presentation/search_screen/widget/search_result_list_item.dart';
 
 class SearchResultList extends StatefulWidget {
   const SearchResultList({
@@ -25,7 +26,7 @@ class _SearchResultListState extends State<SearchResultList> {
     super.initState();
     _scrollController.addListener(() {
       if (_scrollController.position.pixels >
-          _scrollController.position.maxScrollExtent - 200 &&
+              _scrollController.position.maxScrollExtent - 200 &&
           !widget.isLastPage) {
         widget.onFinishingScroll();
       }
@@ -40,11 +41,16 @@ class _SearchResultListState extends State<SearchResultList> {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
+    return ListView.separated(
       controller: _scrollController,
+      separatorBuilder: (context, index) => const SizedBox(height: 8,),
       itemCount: widget.gitRepos.length,
-      itemBuilder: (context, index) =>
-          SizedBox(height: 50,child: Text(widget.gitRepos[index].login)),
+      itemBuilder: (context, index) => SizedBox(
+        height: 50,
+        child: SearchResultListItem(
+          name: widget.gitRepos[index].login,
+        ),
+      ),
     );
   }
 }
