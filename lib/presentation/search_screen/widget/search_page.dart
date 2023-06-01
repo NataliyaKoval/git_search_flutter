@@ -9,6 +9,7 @@ import 'package:git_search/domain/repository/repository.dart';
 import 'package:git_search/presentation/search_screen/bloc/search_cubit.dart';
 import 'package:git_search/presentation/search_screen/use_case/fetch_git_repositories_use_case.dart';
 import 'package:git_search/presentation/search_screen/use_case/get_saved_git_repos_use_case.dart';
+import 'package:git_search/presentation/search_screen/widget/history_list.dart';
 import 'package:git_search/presentation/search_screen/widget/search_result_list.dart';
 import 'package:git_search/presentation/search_screen/widget/search_text_field.dart';
 import 'package:git_search/utils/debouncer.dart';
@@ -74,14 +75,12 @@ class _SearchPageState extends State<SearchPage> {
                               height: 20,
                             ),
                             Expanded(
-                              child: SearchResultList(
-                                gitRepos: state.gitRepositories,
-                                isLastPage: false,
-                                onFinishingScroll: () {},
+                              child: HistoryList(
+                                gitRepositories: state.gitRepositories,
                               ),
                             ),
                           ],
-                        );;
+                        );
                       } else if (state is SearchLoaded) {
                         return Column(
                           mainAxisSize: MainAxisSize.min,
