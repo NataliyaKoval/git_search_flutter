@@ -44,7 +44,7 @@ class _SearchResultListState extends State<SearchResultList> {
       controller: _scrollController,
       itemCount: widget.gitRepos.length,
       itemBuilder: (context, index) =>
-          SizedBox(height: 50,child: Text(widget.gitRepos[index].id.toString())),
+          SizedBox(height: 50,child: Text(widget.gitRepos[index].login)),
     );
   }
 }

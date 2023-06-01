@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:git_search/consts/app_strings.dart';
 import 'package:git_search/di/providers.dart';
 import 'package:git_search/presentation/search_screen/widget/search_page.dart';
 import 'package:provider/provider.dart';
@@ -27,7 +28,7 @@ class _MyAppState extends State<MyApp> {
     return MultiProvider(
       providers: providers.providers,
       child: MaterialApp(
-        title: 'Git Search',
+        title: AppStrings.appName,
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
