@@ -12,7 +12,7 @@ class FetchGitRepositoriesUseCase
 
   @override
   Future<GitRepositoryResponse> call(GitRepoParams params) async {
-    return await repository.fetchGitRepositories(
+    return await repository.fetchAndSaveGitRepositories(
       query: params.query,
       itemsCount: params.itemsCount,
       page: params.page,

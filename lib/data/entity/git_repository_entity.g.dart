@@ -3,6 +3,68 @@
 part of 'git_repository_entity.dart';
 
 // **************************************************************************
+// TypeAdapterGenerator
+// **************************************************************************
+
+class GitRepositoryEntityAdapter extends TypeAdapter<GitRepositoryEntity> {
+  @override
+  final int typeId = 1;
+
+  @override
+  GitRepositoryEntity read(BinaryReader reader) {
+    final numOfFields = reader.readByte();
+    final fields = <int, dynamic>{
+      for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
+    };
+    return GitRepositoryEntity(
+      login: fields[0] as String,
+      id: fields[1] as int,
+      nodeId: fields[2] as String,
+      avatarUrl: fields[3] as String,
+      url: fields[4] as String,
+      htmlUrl: fields[5] as String,
+      reposUrl: fields[6] as String,
+      type: fields[7] as String,
+      score: fields[8] as num,
+    );
+  }
+
+  @override
+  void write(BinaryWriter writer, GitRepositoryEntity obj) {
+    writer
+      ..writeByte(9)
+      ..writeByte(0)
+      ..write(obj.login)
+      ..writeByte(1)
+      ..write(obj.id)
+      ..writeByte(2)
+      ..write(obj.nodeId)
+      ..writeByte(3)
+      ..write(obj.avatarUrl)
+      ..writeByte(4)
+      ..write(obj.url)
+      ..writeByte(5)
+      ..write(obj.htmlUrl)
+      ..writeByte(6)
+      ..write(obj.reposUrl)
+      ..writeByte(7)
+      ..write(obj.type)
+      ..writeByte(8)
+      ..write(obj.score);
+  }
+
+  @override
+  int get hashCode => typeId.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is GitRepositoryEntityAdapter &&
+          runtimeType == other.runtimeType &&
+          typeId == other.typeId;
+}
+
+// **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 

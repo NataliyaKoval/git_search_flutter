@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:git_search/data/datasources/local_database.dart';
 import 'package:git_search/data/datasources/rest_api_client.dart';
 import 'package:git_search/data/repository/repository_impl.dart';
 import 'package:git_search/domain/repository/repository.dart';
@@ -16,9 +17,14 @@ class Providers {
             context.read<Dio>(),
           ),
         ),
+        Provider<LocalDatabase>(
+          create: (BuildContext context) => LocalDatabase(),
+        ),
         Provider<Repository>(
-          create: (BuildContext context) =>
-              RepositoryImpl(restApiClient: context.read<RestApiClient>()),
+          create: (BuildContext context) => RepositoryImpl(
+            restApiClient: context.read<RestApiClient>(),
+            localDatabase: context.read<LocalDatabase>(),
+          ),
         ),
       ];
 }
