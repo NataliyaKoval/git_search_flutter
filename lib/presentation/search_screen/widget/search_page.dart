@@ -4,9 +4,11 @@ import 'package:flutter_svg/svg.dart';
 import 'package:git_search/consts/app_colors.dart';
 import 'package:git_search/consts/app_strings.dart';
 import 'package:git_search/consts/image_assets.dart';
+import 'package:git_search/data/datasources/local_database.dart';
 import 'package:git_search/domain/repository/repository.dart';
 import 'package:git_search/presentation/search_screen/bloc/search_cubit.dart';
 import 'package:git_search/presentation/search_screen/use_case/fetch_git_repositories_use_case.dart';
+import 'package:git_search/presentation/search_screen/use_case/get_saved_git_repos_use_case.dart';
 import 'package:git_search/presentation/search_screen/widget/search_result_list.dart';
 import 'package:git_search/presentation/search_screen/widget/search_text_field.dart';
 import 'package:git_search/utils/debouncer.dart';
@@ -34,7 +36,10 @@ class _SearchPageState extends State<SearchPage> {
         fetchGitRepositoriesUseCase: FetchGitRepositoriesUseCase(
           repository: context.read<Repository>(),
         ),
-      ),
+        getSavedGitReposUseCase: GetSavedGitReposUseCase(
+          repository: context.read<Repository>(),
+        ),
+      )..getSavedGitRepos(),
       child: Builder(builder: (context) {
         return Scaffold(
           appBar: AppBar(),
@@ -52,7 +57,32 @@ class _SearchPageState extends State<SearchPage> {
                 Expanded(
                   child: BlocBuilder<SearchCubit, SearchState>(
                     builder: (BuildContext context, SearchState state) {
-                      if (state is SearchLoaded) {
+                      if (state is HistoryLoaded) {
+                        return Column(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              AppStrings.searchHistory,
+                              style: const TextStyle(
+                                color: AppColors.blue,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            Expanded(
+                              child: SearchResultList(
+                                gitRepos: state.gitRepositories,
+                                isLastPage: false,
+                                onFinishingScroll: () {},
+                              ),
+                            ),
+                          ],
+                        );;
+                      } else if (state is SearchLoaded) {
                         return Column(
                           mainAxisSize: MainAxisSize.min,
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -74,13 +104,14 @@ class _SearchPageState extends State<SearchPage> {
                                 isLastPage: state.isLastPage,
                                 onFinishingScroll: () => context
                                     .read<SearchCubit>()
-                                    .fetchGitRepositories(inputController.text),
+                                    .fetchNextGitRepositories(
+                                        inputController.text),
                               ),
                             ),
                           ],
                         );
                       } else if (state is SearchLoading) {
-                        return const CircularProgressIndicator();
+                        return const Center(child: CircularProgressIndicator());
                       } else {
                         return Container();
                       }
