@@ -1,23 +1,39 @@
 import 'package:flutter/material.dart';
-import 'package:git_search/presentation/home_screen/widget/home_page.dart';
+import 'package:git_search/consts/app_strings.dart';
+import 'package:git_search/di/providers.dart';
+import 'package:git_search/presentation/search_screen/widget/search_page.dart';
+import 'package:provider/provider.dart';
 
 void main() {
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  late Providers providers;
+
+  @override
+  void initState() {
+    super.initState();
+    providers = Providers();
+  }
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Git Search',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
+    return MultiProvider(
+      providers: providers.providers,
+      child: MaterialApp(
+        title: AppStrings.appName,
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+        ),
+        home: const SearchPage(),
       ),
-      home: const HomePage(),
     );
   }
 }
-
