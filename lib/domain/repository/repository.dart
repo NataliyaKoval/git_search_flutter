@@ -13,5 +13,5 @@ abstract class Repository {
 
   List<GitRepository> getFavorites();
 
-  List? getFavoritesKeys();
+  List getFavoritesKeys();
 }

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:git_search/domain/models/git_repository.dart';
-import 'package:git_search/presentation/search_screen/widget/search_result_list_item.dart';
+import 'package:git_search/presentation/widgets/git_repo_list_item.dart';
 
 class SearchResultList extends StatefulWidget {
   const SearchResultList({
@@ -45,11 +45,8 @@ class _SearchResultListState extends State<SearchResultList> {
       controller: _scrollController,
       separatorBuilder: (context, index) => const SizedBox(height: 8,),
       itemCount: widget.gitRepos.length,
-      itemBuilder: (context, index) => SizedBox(
-        height: 50,
-        child: SearchResultListItem(
-          gitRepository: widget.gitRepos[index],
-        ),
+      itemBuilder: (context, index) => GitRepoListItem(
+        gitRepository: widget.gitRepos[index],
       ),
     );
   }

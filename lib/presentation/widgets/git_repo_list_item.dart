@@ -6,8 +6,8 @@ import 'package:git_search/consts/image_assets.dart';
 import 'package:git_search/domain/models/git_repository.dart';
 import 'package:git_search/presentation/search_screen/bloc/search_cubit.dart';
 
-class SearchResultListItem extends StatelessWidget {
-  const SearchResultListItem({
+class GitRepoListItem extends StatelessWidget {
+  const GitRepoListItem({
     Key? key,
     required this.gitRepository,
   }) : super(key: key);
@@ -19,10 +19,9 @@ class SearchResultListItem extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.only(
         left: 16,
-        top: 18,
-        bottom: 17,
         right: 10,
       ),
+      height: 55,
       color: AppColors.antiFlashWhite,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -32,7 +31,8 @@ class SearchResultListItem extends StatelessWidget {
             padding: EdgeInsets.zero,
             icon: SvgPicture.asset(
               ImageAssets.star,
-              color: gitRepository.isFavorite ? AppColors.blue : AppColors.argent,
+              color:
+                  gitRepository.isFavorite ? AppColors.blue : AppColors.argent,
             ),
             onPressed: () {
               context.read<SearchCubit>().toggleFavorite(gitRepository);

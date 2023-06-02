@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:git_search/domain/models/git_repository.dart';
-import 'package:git_search/presentation/search_screen/widget/search_result_list_item.dart';
+import 'package:git_search/presentation/widgets/git_repo_list_item.dart';
 
 class HistoryList extends StatelessWidget {
   const HistoryList({
@@ -17,11 +17,8 @@ class HistoryList extends StatelessWidget {
         height: 8,
       ),
       itemCount: gitRepositories.length,
-      itemBuilder: (context, index) => SizedBox(
-        height: 50,
-        child: SearchResultListItem(
-          gitRepository: gitRepositories[index],
-        ),
+      itemBuilder: (context, index) => GitRepoListItem(
+        gitRepository: gitRepositories[index],
       ),
     );
   }

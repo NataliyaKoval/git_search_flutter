@@ -53,7 +53,7 @@ class RepositoryImpl implements Repository {
   }
 
   @override
-  List? getFavoritesKeys() {
+  List getFavoritesKeys() {
     return localDatabase.getFavoritesKeys();
   }
 }

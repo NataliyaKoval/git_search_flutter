@@ -49,6 +49,7 @@ class _SearchPageState extends State<SearchPage> {
       child: Builder(builder: (context) {
         return Scaffold(
           appBar: AppBar(
+            toolbarHeight: 44,
             backgroundColor: AppColors.ghostWhite,
             centerTitle: true,
             title: Text(
