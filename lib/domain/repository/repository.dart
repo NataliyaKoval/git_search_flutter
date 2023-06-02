@@ -11,7 +11,7 @@ abstract class Repository {
 
   void removeFromFavorites(GitRepository gitRepository);
 
-  List<GitRepository>? getFavorites();
+  List<GitRepository> getFavorites();
 
   List? getFavoritesKeys();
 }

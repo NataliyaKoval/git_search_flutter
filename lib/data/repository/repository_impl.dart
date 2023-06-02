@@ -43,7 +43,7 @@ class RepositoryImpl implements Repository {
   }
 
   @override
-  List<GitRepository>? getFavorites() {
+  List<GitRepository> getFavorites() {
     return localDatabase.getFavorites();
   }
 

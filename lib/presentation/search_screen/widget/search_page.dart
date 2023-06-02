@@ -6,6 +6,7 @@ import 'package:git_search/consts/app_strings.dart';
 import 'package:git_search/consts/image_assets.dart';
 import 'package:git_search/data/datasources/local_database.dart';
 import 'package:git_search/domain/repository/repository.dart';
+import 'package:git_search/presentation/favorite_screen/widget/favorite_page.dart';
 import 'package:git_search/presentation/search_screen/bloc/search_cubit.dart';
 import 'package:git_search/presentation/search_screen/use_case/fetch_git_repositories_use_case.dart';
 import 'package:git_search/presentation/search_screen/use_case/get_saved_git_repos_use_case.dart';
@@ -47,7 +48,39 @@ class _SearchPageState extends State<SearchPage> {
       )..getSavedGitRepos(),
       child: Builder(builder: (context) {
         return Scaffold(
-          appBar: AppBar(),
+          appBar: AppBar(
+            backgroundColor: AppColors.ghostWhite,
+            centerTitle: true,
+            title: Text(
+              AppStrings.searchScreenTitle,
+              style: const TextStyle(color: AppColors.blackChocolate),
+            ),
+            actions: [
+              Padding(
+                padding: const EdgeInsets.only(right: 11),
+                child: Ink(
+                  decoration: BoxDecoration(
+                    color: AppColors.blue,
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: IconButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const FavoritePage(),
+                        ),
+                      );
+                    },
+                    icon: SvgPicture.asset(
+                      ImageAssets.star,
+                      color: AppColors.ghostWhite,
+                    ),
+                  ),
+                ),
+              )
+            ],
+          ),
           body: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
             child: Column(
