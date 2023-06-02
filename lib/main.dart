@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:git_search/consts/app_strings.dart';
+import 'package:git_search/data/entity/git_repository_entity.dart';
 import 'package:git_search/di/providers.dart';
 import 'package:git_search/presentation/search_screen/widget/search_page.dart';
+import 'package:hive_flutter/adapters.dart';
 import 'package:provider/provider.dart';
 
-void main() {
+void main() async {
+  await Hive.initFlutter();
+  Hive.registerAdapter<GitRepositoryEntity>(GitRepositoryEntityAdapter());
+  await Hive.openBox<GitRepositoryEntity>('searched');
   runApp(const MyApp());
 }
 

@@ -1,6 +1,9 @@
-import 'package:git_search/data/entity/git_repository_response_entity.dart';
+import 'package:git_search/domain/models/git_repository.dart';
+import 'package:git_search/domain/models/git_repository_response.dart';
 
 abstract class Repository {
-  Future<GitRepositoryResponseEntity> fetchGitRepositories(
+  Future<GitRepositoryResponse> fetchAndSaveGitRepositories(
       {required String query, required int itemsCount, required int page});
+
+  Future<List<GitRepository>> getSavedGitRepos();
 }
