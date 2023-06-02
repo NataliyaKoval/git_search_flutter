@@ -20,7 +20,7 @@ class HistoryList extends StatelessWidget {
       itemBuilder: (context, index) => SizedBox(
         height: 50,
         child: SearchResultListItem(
-          name: gitRepositories[index].login,
+          gitRepository: gitRepositories[index],
         ),
       ),
     );

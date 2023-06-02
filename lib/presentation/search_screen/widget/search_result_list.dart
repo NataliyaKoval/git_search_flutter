@@ -48,7 +48,7 @@ class _SearchResultListState extends State<SearchResultList> {
       itemBuilder: (context, index) => SizedBox(
         height: 50,
         child: SearchResultListItem(
-          name: widget.gitRepos[index].login,
+          gitRepository: widget.gitRepos[index],
         ),
       ),
     );

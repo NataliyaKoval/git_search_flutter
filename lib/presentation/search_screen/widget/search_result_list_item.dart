@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:git_search/consts/app_colors.dart';
 import 'package:git_search/consts/image_assets.dart';
+import 'package:git_search/domain/models/git_repository.dart';
+import 'package:git_search/presentation/search_screen/bloc/search_cubit.dart';
 
 class SearchResultListItem extends StatelessWidget {
   const SearchResultListItem({
     Key? key,
-    required this.name,
+    required this.gitRepository,
   }) : super(key: key);
 
-  final String name;
+  final GitRepository gitRepository;
 
   @override
   Widget build(BuildContext context) {
@@ -24,13 +27,16 @@ class SearchResultListItem extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(name),
+          Text(gitRepository.login),
           IconButton(
             padding: EdgeInsets.zero,
             icon: SvgPicture.asset(
               ImageAssets.star,
+              color: gitRepository.isFavorite ? AppColors.blue : AppColors.argent,
             ),
-            onPressed: () {},
+            onPressed: () {
+              context.read<SearchCubit>().toggleFavorite(gitRepository);
+            },
           ),
         ],
       ),

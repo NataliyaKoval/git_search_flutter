@@ -9,6 +9,7 @@ class GitRepository {
     required this.reposUrl,
     required this.type,
     required this.score,
+    this.isFavorite = false,
   });
 
   final String login;
@@ -20,4 +21,31 @@ class GitRepository {
   final String reposUrl;
   final String type;
   final num score;
+  final bool isFavorite;
+
+  GitRepository copyWith({
+    String? login,
+    int? id,
+    String? nodeId,
+    String? avatarUrl,
+    String? url,
+    String? htmlUrl,
+    String? reposUrl,
+    String? type,
+    num? score,
+    bool? isFavorite,
+  }) {
+    return GitRepository(
+      login: login ?? this.login,
+      id: id ?? this.id,
+      nodeId: nodeId ?? this.nodeId,
+      avatarUrl: avatarUrl ?? this.avatarUrl,
+      url: url ?? this.url,
+      htmlUrl: htmlUrl ?? this.htmlUrl,
+      reposUrl: reposUrl ?? this.reposUrl,
+      type: type ?? this.type,
+      score: score ?? this.score,
+      isFavorite: isFavorite ?? this.isFavorite,
+    );
+  }
 }
