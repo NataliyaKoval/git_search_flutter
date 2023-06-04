@@ -10,6 +10,7 @@ void main() async {
   await Hive.initFlutter();
   Hive.registerAdapter<GitRepositoryEntity>(GitRepositoryEntityAdapter());
   await Hive.openBox<GitRepositoryEntity>('searched');
+  await Hive.openBox<GitRepositoryEntity>('favorites');
   runApp(const MyApp());
 }
 

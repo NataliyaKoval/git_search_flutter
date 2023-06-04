@@ -18,11 +18,25 @@ class GitRepositoryEntity implements GitRepository {
     required this.reposUrl,
     required this.type,
     required this.score,
+    this.isFavorite = false,
   });
 
   //flutter pub run build_runner build
   factory GitRepositoryEntity.fromJson(Map<String, dynamic> json) =>
       _$GitRepositoryEntityFromJson(json);
+
+  factory GitRepositoryEntity.fromGitRepository(GitRepository gitRepository) =>
+      GitRepositoryEntity(
+        login: gitRepository.login,
+        id: gitRepository.id,
+        nodeId: gitRepository.nodeId,
+        avatarUrl: gitRepository.avatarUrl,
+        url: gitRepository.url,
+        htmlUrl: gitRepository.htmlUrl,
+        reposUrl: gitRepository.reposUrl,
+        type: gitRepository.type,
+        score: gitRepository.score,
+      );
 
   @HiveField(0)
   @override
@@ -68,4 +82,35 @@ class GitRepositoryEntity implements GitRepository {
   @override
   @JsonKey(name: 'score')
   final num score;
+
+  @override
+  @JsonKey(includeFromJson: false)
+  final bool isFavorite;
+
+  @override
+  GitRepositoryEntity copyWith({
+    String? login,
+    int? id,
+    String? nodeId,
+    String? avatarUrl,
+    String? url,
+    String? htmlUrl,
+    String? reposUrl,
+    String? type,
+    num? score,
+    bool? isFavorite,
+  }) {
+    return GitRepositoryEntity(
+      login: login ?? this.login,
+      id: id ?? this.id,
+      nodeId: nodeId ?? this.nodeId,
+      avatarUrl: avatarUrl ?? this.avatarUrl,
+      url: url ?? this.url,
+      htmlUrl: htmlUrl ?? this.htmlUrl,
+      reposUrl: reposUrl ?? this.reposUrl,
+      type: type ?? this.type,
+      score: score ?? this.score,
+      isFavorite: isFavorite ?? this.isFavorite,
+    );
+  }
 }

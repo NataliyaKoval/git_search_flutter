@@ -6,4 +6,12 @@ abstract class Repository {
       {required String query, required int itemsCount, required int page});
 
   Future<List<GitRepository>> getSavedGitRepos();
+
+  void addToFavorites(GitRepository gitRepository);
+
+  void removeFromFavorites(GitRepository gitRepository);
+
+  List<GitRepository> getFavorites();
+
+  List getFavoritesKeys();
 }
