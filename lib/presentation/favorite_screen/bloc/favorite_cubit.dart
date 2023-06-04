@@ -16,6 +16,7 @@ class FavoriteCubit extends Cubit<FavoriteState> {
   final RemoveFavoritesUsecase removeFavoritesUsecase;
 
   List<GitRepository> mappedFavorites = [];
+  List<int> removedFavoriteIndexes = [];
 
   Future<void> getFavorites() async {
     List<GitRepository> favorites = await getFavoritesUseCase.call();
@@ -28,6 +29,7 @@ class FavoriteCubit extends Cubit<FavoriteState> {
   }
 
   Future<void> removeFavorite (GitRepository gitRepository) async {
+    removedFavoriteIndexes.add(gitRepository.id);
     try {
       removeFavoritesUsecase.call(gitRepository);
       mappedFavorites.removeWhere((element) => element.id == gitRepository.id);

@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:git_search/consts/app_colors.dart';
 import 'package:git_search/consts/image_assets.dart';
 import 'package:git_search/domain/models/git_repository.dart';
-import 'package:git_search/presentation/search_screen/bloc/search_cubit.dart';
 
 class GitRepoListItem extends StatelessWidget {
   const GitRepoListItem({

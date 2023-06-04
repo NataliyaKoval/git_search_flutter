@@ -95,7 +95,8 @@ class SearchCubit extends Cubit<SearchState> {
       GitRepository changedGitRepository =
           await toggleFavoritesUsecase.call(gitRepository);
 
-      final index = allGitRepos.indexWhere((element) => element.id == gitRepository.id);
+      final index =
+          allGitRepos.indexWhere((element) => element.id == gitRepository.id);
       allGitRepos[index] = changedGitRepository;
       emit(
         SearchLoaded(gitRepositories: allGitRepos, isLastPage: isLastPage),
@@ -103,5 +104,20 @@ class SearchCubit extends Cubit<SearchState> {
     } catch (e) {
       print(e);
     }
+  }
+
+  Future<void> updateListAfterRemovingFavorites(
+      List<int> removedFavorites) async {
+    List<GitRepository> newList = allGitRepos.map((e) {
+      if (removedFavorites.contains(e.id)) {
+        return e.copyWith(isFavorite: false);
+      } else {
+        return e;
+      }
+    }).toList();
+    allGitRepos = newList;
+    emit(
+      SearchLoaded(gitRepositories: allGitRepos, isLastPage: isLastPage),
+    );
   }
 }
