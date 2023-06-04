@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:git_search/domain/models/git_repository.dart';
+import 'package:git_search/presentation/search_screen/bloc/search_cubit.dart';
 import 'package:git_search/presentation/widgets/git_repo_list_item.dart';
 
 class SearchResultList extends StatefulWidget {
@@ -26,7 +28,7 @@ class _SearchResultListState extends State<SearchResultList> {
     super.initState();
     _scrollController.addListener(() {
       if (_scrollController.position.pixels >
-              _scrollController.position.maxScrollExtent - 200 &&
+          _scrollController.position.maxScrollExtent - 200 &&
           !widget.isLastPage) {
         widget.onFinishingScroll();
       }
@@ -45,9 +47,12 @@ class _SearchResultListState extends State<SearchResultList> {
       controller: _scrollController,
       separatorBuilder: (context, index) => const SizedBox(height: 8,),
       itemCount: widget.gitRepos.length,
-      itemBuilder: (context, index) => GitRepoListItem(
-        gitRepository: widget.gitRepos[index],
-      ),
+      itemBuilder: (context, index) =>
+          GitRepoListItem(
+            gitRepository: widget.gitRepos[index], onPressed: () {
+            context.read<SearchCubit>().toggleFavorite(widget.gitRepos[index]);
+          },
+          ),
     );
   }
 }

@@ -10,9 +10,11 @@ class GitRepoListItem extends StatelessWidget {
   const GitRepoListItem({
     Key? key,
     required this.gitRepository,
+    required this.onPressed,
   }) : super(key: key);
 
   final GitRepository gitRepository;
+  final VoidCallback onPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -34,9 +36,7 @@ class GitRepoListItem extends StatelessWidget {
               color:
                   gitRepository.isFavorite ? AppColors.blue : AppColors.argent,
             ),
-            onPressed: () {
-              context.read<SearchCubit>().toggleFavorite(gitRepository);
-            },
+            onPressed: onPressed,
           ),
         ],
       ),
