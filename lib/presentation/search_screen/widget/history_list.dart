@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:git_search/domain/models/git_repository.dart';
+import 'package:git_search/presentation/search_screen/widget/history_list_item.dart';
 import 'package:git_search/presentation/widgets/git_repo_list_item.dart';
 
 class HistoryList extends StatelessWidget {
@@ -17,7 +18,7 @@ class HistoryList extends StatelessWidget {
         height: 8,
       ),
       itemCount: gitRepositories.length,
-      itemBuilder: (context, index) => GitRepoListItem(
+      itemBuilder: (context, index) => HistoryListItem(
         gitRepository: gitRepositories[index],
       ),
     );
