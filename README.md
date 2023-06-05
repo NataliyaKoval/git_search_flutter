@@ -1,16 +1,6 @@
 # git_search
 
-A new Flutter project.
+A Flutter project for searching Git repositories with the ability to save favorite repositories.
 
-## Getting Started
+https://github.com/NataliyaKoval/git_search_flutter/assets/69919727/702aed37-c3ce-4d8c-8e3c-56560e86d1d3
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
