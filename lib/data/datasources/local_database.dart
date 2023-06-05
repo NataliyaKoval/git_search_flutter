@@ -2,17 +2,16 @@ import 'package:git_search/data/entity/git_repository_entity.dart';
 import 'package:hive/hive.dart';
 
 class LocalDatabase {
-  final Box<GitRepositoryEntity> searchedBox =
-      Hive.box<GitRepositoryEntity>('searched');
+  final Box<String> queriesBox = Hive.box<String>('queries');
   final Box<GitRepositoryEntity> favorites =
       Hive.box<GitRepositoryEntity>('favorites');
 
-  void saveSearchedGitRepos(GitRepositoryEntity gitRepo) {
-    searchedBox.add(gitRepo);
+  void saveQuery(String query) {
+    queriesBox.add(query);
   }
 
-  List<GitRepositoryEntity> getSavedGitRepos() {
-    return searchedBox.values.toList();
+  Set<String> getSavedQueries() {
+    return queriesBox.values.toSet();
   }
 
   void addToFavorites(GitRepositoryEntity gitRepo) {

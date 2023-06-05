@@ -2,9 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:git_search/domain/models/git_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:git_search/domain/models/git_repository_response.dart';
+import 'package:git_search/domain/models/history_item.dart';
 import 'package:git_search/presentation/search_screen/use_case/fetch_git_repositories_use_case.dart';
-import 'package:git_search/presentation/search_screen/use_case/get_saved_git_repos_use_case.dart';
+import 'package:git_search/presentation/search_screen/use_case/get_saved_queries_use_case.dart';
+import 'package:git_search/presentation/search_screen/use_case/save_query_use_case.dart';
 import 'package:git_search/presentation/search_screen/use_case/toggle_favorites_use_case.dart';
+import 'package:git_search/presentation/use_cases/get_favorites_use_case.dart';
 import 'package:git_search/utils/app_error.dart';
 
 part 'search_state.dart';
@@ -12,13 +15,17 @@ part 'search_state.dart';
 class SearchCubit extends Cubit<SearchState> {
   SearchCubit({
     required this.fetchGitRepositoriesUseCase,
-    required this.getSavedGitReposUseCase,
     required this.toggleFavoritesUsecase,
+    required this.saveQueryUseCase,
+    required this.getSavedQueriesUseCase,
+    required this.getFavoritesUseCase,
   }) : super(SearchInitial());
 
   final FetchGitRepositoriesUseCase fetchGitRepositoriesUseCase;
-  final GetSavedGitReposUseCase getSavedGitReposUseCase;
   final ToggleFavoritesUsecase toggleFavoritesUsecase;
+  final SaveQueryUseCase saveQueryUseCase;
+  final GetSavedQueriesUseCase getSavedQueriesUseCase;
+  final GetFavoritesUseCase getFavoritesUseCase;
 
   static const int _itemsCount = 15;
   int page = 1;
@@ -26,14 +33,27 @@ class SearchCubit extends Cubit<SearchState> {
   List<GitRepository> allGitRepos = <GitRepository>[];
   bool isFutureRunning = false;
 
-  Future<void> getSavedGitRepos() async {
+  Future<void> saveQuery(String query) async {
     try {
-      List<GitRepository> savedRepos = await getSavedGitReposUseCase.call();
-      if (savedRepos.isNotEmpty) {
-        emit(HistoryLoaded(gitRepositories: savedRepos));
-      } else {
-        emit(HistoryEmpty());
-      }
+      saveQueryUseCase.call(query);
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  Future<void> getQueriesHistory() async {
+    try {
+      Set<String> queries = await getSavedQueriesUseCase.call();
+      List<GitRepository> favorites = await getFavoritesUseCase.call();
+      List<String> favoriteLogins = favorites.map((favorite) => favorite.login).toList();
+      List<HistoryItem> historyItems = queries.map((query) {
+        if (favoriteLogins.contains(query)) {
+          return HistoryItem(name: query, isFavorite: true);
+        } else {
+          return HistoryItem(name: query, isFavorite: false);
+        }
+      }).toList();
+      emit(HistoryLoaded(historyItems: historyItems));
     } catch (e) {
       print(e);
     }

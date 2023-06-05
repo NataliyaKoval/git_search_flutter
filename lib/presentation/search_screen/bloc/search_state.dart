@@ -9,10 +9,10 @@ class HistoryEmpty extends SearchState {}
 
 class HistoryLoaded extends SearchState {
   HistoryLoaded({
-    required this.gitRepositories,
+    required this.historyItems,
   });
 
-  final List<GitRepository> gitRepositories;
+  final List<HistoryItem> historyItems;
 }
 
 class SearchLoading extends SearchState {}

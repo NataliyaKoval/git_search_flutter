@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:git_search/domain/models/git_repository.dart';
-import 'package:git_search/presentation/favorite_screen/use_case/get_favorites_use_case.dart';
+import 'package:git_search/presentation/use_cases/get_favorites_use_case.dart';
 import 'package:git_search/presentation/favorite_screen/use_case/remove_favorite_use_case.dart';
 
 part 'favorite_state.dart';
