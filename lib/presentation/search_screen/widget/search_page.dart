@@ -65,14 +65,15 @@ class _SearchPageState extends State<SearchPage> {
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: IconButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const FavoritePage(),
-                        ),
-                      );
-                    },
+                    onPressed: () => _awaitReturnValueFromFavoriteScreen(context),
+                    // onPressed: () {
+                    //   Navigator.push(
+                    //     context,
+                    //     MaterialPageRoute(
+                    //       builder: (context) => const FavoritePage(),
+                    //     ),
+                    //   );
+                    // },
                     icon: SvgPicture.asset(
                       ImageAssets.star,
                       color: AppColors.ghostWhite,
@@ -161,5 +162,18 @@ class _SearchPageState extends State<SearchPage> {
         );
       }),
     );
+  }
+
+  void _awaitReturnValueFromFavoriteScreen(BuildContext context) async {
+    if (!context.mounted) return;
+    final List<int> result = await Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const FavoritePage(),
+        ));
+    print(result);
+    if (result.isNotEmpty) {
+      context.read<SearchCubit>().updateListAfterRemovingFavorites(result);
+    }
   }
 }

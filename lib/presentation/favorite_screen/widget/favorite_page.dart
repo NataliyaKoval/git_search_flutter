@@ -26,33 +26,7 @@ class FavoritePage extends StatelessWidget {
       )..getFavorites(),
       child: Builder(builder: (context) {
         return Scaffold(
-          appBar: AppBar(
-            toolbarHeight: 44,
-            backgroundColor: AppColors.ghostWhite,
-            centerTitle: true,
-            title: Text(
-              AppStrings.favoriteScreenTitle,
-              style: const TextStyle(color: AppColors.blackChocolate),
-            ),
-            leading: Padding(
-              padding: const EdgeInsets.only(left: 15),
-              child: Ink(
-                decoration: BoxDecoration(
-                  color: AppColors.blue,
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: IconButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  icon: SvgPicture.asset(
-                    ImageAssets.arrow,
-                    color: AppColors.ghostWhite,
-                  ),
-                ),
-              ),
-            ),
-          ),
+          appBar: _buildAppBar(context),
           body: Padding(
             padding: const EdgeInsets.symmetric(
               horizontal: 16,
@@ -75,6 +49,18 @@ class FavoritePage extends StatelessWidget {
                       },
                     ),
                   );
+                } else if (state is FavoriteEmpty) {
+                  return Center(
+                    child: Text(
+                      AppStrings.noFavorites,
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(
+                        color: AppColors.argent,
+                      ),
+                    ),
+                  );
+                } else if (state is FavoriteLoading) {
+                  return const CircularProgressIndicator();
                 } else {
                   return Container();
                 }
@@ -83,6 +69,38 @@ class FavoritePage extends StatelessWidget {
           ),
         );
       }),
+    );
+  }
+
+  PreferredSizeWidget? _buildAppBar(BuildContext context) {
+    return AppBar(
+      toolbarHeight: 44,
+      backgroundColor: AppColors.ghostWhite,
+      centerTitle: true,
+      title: Text(
+        AppStrings.favoriteScreenTitle,
+        style: const TextStyle(color: AppColors.blackChocolate),
+      ),
+      leading: Padding(
+        padding: const EdgeInsets.only(left: 15),
+        child: Ink(
+          decoration: BoxDecoration(
+            color: AppColors.blue,
+            borderRadius: BorderRadius.circular(12),
+          ),
+          child: IconButton(
+            onPressed: () {
+              final List<int> removedGitRepos =
+                  context.read<FavoriteCubit>().removedFavoriteIndexes;
+              Navigator.of(context).pop(removedGitRepos);
+            },
+            icon: SvgPicture.asset(
+              ImageAssets.arrow,
+              color: AppColors.ghostWhite,
+            ),
+          ),
+        ),
+      ),
     );
   }
 }
