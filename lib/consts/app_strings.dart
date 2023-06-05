@@ -1,6 +1,8 @@
 class AppStrings {
   static String get appName => 'Git Search';
 
+  static String get splashText => 'Search App';
+
   static String get searchScreenTitle => 'Github repos list';
 
   static String get favoriteScreenTitle => 'Favorite repos list';
