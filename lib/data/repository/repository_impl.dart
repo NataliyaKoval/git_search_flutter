@@ -6,6 +6,8 @@ import 'package:git_search/domain/models/git_repository.dart';
 import 'package:git_search/domain/models/git_repository_response.dart';
 import 'package:git_search/domain/repository/repository.dart';
 
+import '../../utils/app_error.dart';
+
 class RepositoryImpl implements Repository {
   const RepositoryImpl({
     required this.restApiClient,
@@ -16,16 +18,16 @@ class RepositoryImpl implements Repository {
   final LocalDatabase localDatabase;
 
   @override
-  Future<GitRepositoryResponse> fetchAndSaveGitRepositories(
-      {required String query,
-      required int itemsCount,
-      required int page}) async {
+  Future<GitRepositoryResponse> fetchAndSaveGitRepositories({
+    required String query,
+    required int itemsCount,
+    required int page,
+  }) async {
     GitRepositoryResponseEntity response =
-        await restApiClient.fetchRepository(query, itemsCount, page);
+        await execute(() =>  restApiClient.fetchRepository(query, itemsCount, page));
 
     for (var item in response.items) {
       localDatabase.saveSearchedGitRepos(item);
-      print(item.login);
     }
 
     return response;

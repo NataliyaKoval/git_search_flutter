@@ -5,6 +5,7 @@ import 'package:git_search/domain/models/git_repository_response.dart';
 import 'package:git_search/presentation/search_screen/use_case/fetch_git_repositories_use_case.dart';
 import 'package:git_search/presentation/search_screen/use_case/get_saved_git_repos_use_case.dart';
 import 'package:git_search/presentation/search_screen/use_case/toggle_favorites_use_case.dart';
+import 'package:git_search/utils/app_error.dart';
 
 part 'search_state.dart';
 
@@ -57,8 +58,8 @@ class SearchCubit extends Cubit<SearchState> {
       emit(
         SearchLoaded(gitRepositories: allGitRepos, isLastPage: isLastPage),
       );
-    } catch (e) {
-      print(e);
+    } on AppError catch (e) {
+      emit(SearchError(message: e.message));
     } finally {
       isFutureRunning = false;
     }
@@ -87,8 +88,8 @@ class SearchCubit extends Cubit<SearchState> {
       emit(
         SearchLoaded(gitRepositories: allGitRepos, isLastPage: isLastPage),
       );
-    } catch (e) {
-      print(e);
+    } on AppError catch (e) {
+      emit(SearchError(message: e.message));
     } finally {
       isFutureRunning = false;
     }

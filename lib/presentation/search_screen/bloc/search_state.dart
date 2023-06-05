@@ -26,3 +26,11 @@ class SearchLoaded extends SearchState {
   final List<GitRepository> gitRepositories;
   final bool isLastPage;
 }
+
+class SearchError extends SearchState {
+  SearchError({
+    required this.message,
+  });
+
+  final String message;
+}

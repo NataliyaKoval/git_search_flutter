@@ -20,13 +20,20 @@ class SearchTextField extends StatefulWidget {
 
 class _SearchTextFieldState extends State<SearchTextField> {
   final debouncer = Debouncer(milliseconds: 1000);
+  late bool isFilled;
+
+  @override
+  void initState() {
+    super.initState();
+    isFilled = false;
+  }
 
   @override
   Widget build(BuildContext context) {
     return TextField(
       controller: widget.inputController,
       decoration: InputDecoration(
-        //filled: true,
+        filled: isFilled,
         fillColor: AppColors.lavender,
         contentPadding: const EdgeInsets.all(18),
         prefixIconConstraints: const BoxConstraints(
@@ -69,6 +76,16 @@ class _SearchTextFieldState extends State<SearchTextField> {
         hintStyle: const TextStyle(color: AppColors.argent),
       ),
       onChanged: (value) => _onInputChanged(context, value),
+      onTap: () {
+        setState(() {
+          isFilled = true;
+        });
+      },
+      onTapOutside: (event) {
+        setState(() {
+          isFilled = false;
+        });
+      },
     );
   }
 
