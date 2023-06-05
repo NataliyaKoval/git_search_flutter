@@ -26,42 +26,50 @@ class FavoritePage extends StatelessWidget {
         ),
       )..getFavorites(),
       child: Builder(builder: (context) {
-        return Scaffold(
-          appBar: _buildAppBar(context),
-          body: Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 16,
-              vertical: 24,
-            ),
-            child: BlocBuilder<FavoriteCubit, FavoriteState>(
-              builder: (context, state) {
-                if (state is FavoriteLoaded) {
-                  return ListView.separated(
-                    separatorBuilder: (context, index) => const SizedBox(
-                      height: 8,
-                    ),
-                    itemCount: state.gitRepos.length,
-                    itemBuilder: (context, index) => GitRepoListItem(
-                      gitRepository: state.gitRepos[index],
-                      onPressed: () {
-                        context
-                            .read<FavoriteCubit>()
-                            .removeFavorite(state.gitRepos[index]);
-                      },
-                    ),
-                  );
-                } else if (state is FavoriteEmpty) {
-                  return Center(
-                    child: EmptyListText(
-                      text: AppStrings.noFavorites,
-                    ),
-                  );
-                } else if (state is FavoriteLoading) {
-                  return const CircularProgressIndicator();
-                } else {
-                  return Container();
-                }
-              },
+        return WillPopScope(
+          onWillPop: () async {
+            final List<int> removedGitRepos =
+                context.read<FavoriteCubit>().removedFavoriteIndexes;
+            Navigator.of(context).pop(removedGitRepos);
+            return false;
+          },
+          child: Scaffold(
+            appBar: _buildAppBar(context),
+            body: Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 16,
+                vertical: 24,
+              ),
+              child: BlocBuilder<FavoriteCubit, FavoriteState>(
+                builder: (context, state) {
+                  if (state is FavoriteLoaded) {
+                    return ListView.separated(
+                      separatorBuilder: (context, index) => const SizedBox(
+                        height: 8,
+                      ),
+                      itemCount: state.gitRepos.length,
+                      itemBuilder: (context, index) => GitRepoListItem(
+                        gitRepository: state.gitRepos[index],
+                        onPressed: () {
+                          context
+                              .read<FavoriteCubit>()
+                              .removeFavorite(state.gitRepos[index]);
+                        },
+                      ),
+                    );
+                  } else if (state is FavoriteEmpty) {
+                    return Center(
+                      child: EmptyListText(
+                        text: AppStrings.noFavorites,
+                      ),
+                    );
+                  } else if (state is FavoriteLoading) {
+                    return const CircularProgressIndicator();
+                  } else {
+                    return Container();
+                  }
+                },
+              ),
             ),
           ),
         );
