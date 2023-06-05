@@ -26,16 +26,21 @@ class RepositoryImpl implements Repository {
     GitRepositoryResponseEntity response =
         await execute(() =>  restApiClient.fetchRepository(query, itemsCount, page));
 
-    for (var item in response.items) {
-      localDatabase.saveSearchedGitRepos(item);
-    }
+    // for (var item in response.items) {
+    //   localDatabase.saveSearchedGitRepos(item);
+    // }
 
     return response;
   }
 
   @override
-  Future<List<GitRepository>> getSavedGitRepos() async {
-    return localDatabase.getSavedGitRepos();
+  Future<void> saveQuery(String query) async {
+    localDatabase.saveQuery(query);
+  }
+
+  @override
+  Future<Set<String>> getSavedQueries() async {
+    return localDatabase.getSavedQueries();
   }
 
   @override

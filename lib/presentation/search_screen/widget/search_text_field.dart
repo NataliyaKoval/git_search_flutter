@@ -90,8 +90,9 @@ class _SearchTextFieldState extends State<SearchTextField> {
   }
 
   void _onInputChanged(BuildContext context, String value) {
-     debouncer.run(() {
+    debouncer.run(() {
+      context.read<SearchCubit>().saveQuery(value);
       context.read<SearchCubit>().searchGitRepositories(value);
-     });
+    });
   }
 }

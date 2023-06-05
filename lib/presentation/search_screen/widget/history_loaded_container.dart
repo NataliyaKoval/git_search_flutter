@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:git_search/consts/app_colors.dart';
 import 'package:git_search/consts/app_strings.dart';
-import 'package:git_search/domain/models/git_repository.dart';
+import 'package:git_search/domain/models/history_item.dart';
 import 'package:git_search/presentation/search_screen/widget/history_list.dart';
 
 class HistoryLoadedContainer extends StatelessWidget {
   const HistoryLoadedContainer({
     Key? key,
-    required this.gitRepositories,
+    required this.historyItems,
   }) : super(key: key);
 
-  final List<GitRepository> gitRepositories;
+  final List<HistoryItem> historyItems;
 
   @override
   Widget build(BuildContext context) {
@@ -30,12 +30,10 @@ class HistoryLoadedContainer extends StatelessWidget {
           height: 20,
         ),
         Expanded(
-          child: HistoryList(
-            gitRepositories: gitRepositories,
+          child: HistoryList(historyItems: historyItems,
           ),
         ),
       ],
     );
-    ;
   }
 }

@@ -6,7 +6,7 @@ import 'package:git_search/consts/app_strings.dart';
 import 'package:git_search/consts/image_assets.dart';
 import 'package:git_search/domain/repository/repository.dart';
 import 'package:git_search/presentation/favorite_screen/bloc/favorite_cubit.dart';
-import 'package:git_search/presentation/favorite_screen/use_case/get_favorites_use_case.dart';
+import 'package:git_search/presentation/use_cases/get_favorites_use_case.dart';
 import 'package:git_search/presentation/favorite_screen/use_case/remove_favorite_use_case.dart';
 import 'package:git_search/presentation/widgets/empty_list_text.dart';
 import 'package:git_search/presentation/widgets/git_repo_list_item.dart';

@@ -5,7 +5,9 @@ abstract class Repository {
   Future<GitRepositoryResponse> fetchAndSaveGitRepositories(
       {required String query, required int itemsCount, required int page});
 
-  Future<List<GitRepository>> getSavedGitRepos();
+  Future<void> saveQuery(String query);
+
+  Future<Set<String>> getSavedQueries();
 
   void addToFavorites(GitRepository gitRepository);
 

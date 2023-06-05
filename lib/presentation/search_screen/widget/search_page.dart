@@ -4,18 +4,17 @@ import 'package:flutter_svg/svg.dart';
 import 'package:git_search/consts/app_colors.dart';
 import 'package:git_search/consts/app_strings.dart';
 import 'package:git_search/consts/image_assets.dart';
-import 'package:git_search/data/datasources/local_database.dart';
 import 'package:git_search/domain/repository/repository.dart';
 import 'package:git_search/presentation/favorite_screen/widget/favorite_page.dart';
 import 'package:git_search/presentation/search_screen/bloc/search_cubit.dart';
 import 'package:git_search/presentation/search_screen/use_case/fetch_git_repositories_use_case.dart';
-import 'package:git_search/presentation/search_screen/use_case/get_saved_git_repos_use_case.dart';
+import 'package:git_search/presentation/search_screen/use_case/get_saved_queries_use_case.dart';
+import 'package:git_search/presentation/search_screen/use_case/save_query_use_case.dart';
 import 'package:git_search/presentation/search_screen/use_case/toggle_favorites_use_case.dart';
-import 'package:git_search/presentation/search_screen/widget/history_list.dart';
 import 'package:git_search/presentation/search_screen/widget/search_result_list.dart';
 import 'package:git_search/presentation/search_screen/widget/search_text_field.dart';
+import 'package:git_search/presentation/use_cases/get_favorites_use_case.dart';
 import 'package:git_search/presentation/widgets/empty_list_text.dart';
-import 'package:git_search/utils/debouncer.dart';
 
 import 'history_loaded_container.dart';
 
@@ -38,19 +37,23 @@ class _SearchPageState extends State<SearchPage> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider<SearchCubit>(
-      create: (BuildContext context) =>
-      SearchCubit(
+      create: (BuildContext context) => SearchCubit(
         fetchGitRepositoriesUseCase: FetchGitRepositoriesUseCase(
           repository: context.read<Repository>(),
         ),
-        getSavedGitReposUseCase: GetSavedGitReposUseCase(
+        saveQueryUseCase: SaveQueryUseCase(
           repository: context.read<Repository>(),
         ),
         toggleFavoritesUsecase: ToggleFavoritesUsecase(
           repository: context.read<Repository>(),
         ),
-      )
-        ..getSavedGitRepos(),
+        getSavedQueriesUseCase: GetSavedQueriesUseCase(
+          repository: context.read<Repository>(),
+        ),
+        getFavoritesUseCase: GetFavoritesUseCase(
+          repository: context.read<Repository>(),
+        ),
+      )..getQueriesHistory(),
       child: Builder(builder: (context) {
         return BlocListener<SearchCubit, SearchState>(
           listener: (context, state) {
@@ -123,7 +126,7 @@ class _SearchPageState extends State<SearchPage> {
   Widget _buildScreenBody(BuildContext context, SearchState state) {
     if (state is HistoryLoaded) {
       return HistoryLoadedContainer(
-        gitRepositories: state.gitRepositories,
+        historyItems: state.historyItems,
       );
     } else if (state is HistoryEmpty) {
       return Center(
@@ -151,10 +154,9 @@ class _SearchPageState extends State<SearchPage> {
             child: SearchResultList(
               gitRepos: state.gitRepositories,
               isLastPage: state.isLastPage,
-              onFinishingScroll: () =>
-                  context
-                      .read<SearchCubit>()
-                      .fetchNextGitRepositories(inputController.text),
+              onFinishingScroll: () => context
+                  .read<SearchCubit>()
+                  .fetchNextGitRepositories(inputController.text),
             ),
           ),
         ],
