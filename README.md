@@ -2,5 +2,5 @@
 
 A Flutter project for searching Git repositories with the ability to save favorite repositories.
 
-https://github.com/NataliyaKoval/git_search_flutter/assets/69919727/702aed37-c3ce-4d8c-8e3c-56560e86d1d3
+https://github.com/NataliyaKoval/git_search_flutter/assets/69919727/2cfa59f7-9417-4cbf-8e48-874950cddf46
 
