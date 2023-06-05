@@ -38,7 +38,8 @@ class _SearchPageState extends State<SearchPage> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider<SearchCubit>(
-      create: (BuildContext context) => SearchCubit(
+      create: (BuildContext context) =>
+      SearchCubit(
         fetchGitRepositoriesUseCase: FetchGitRepositoriesUseCase(
           repository: context.read<Repository>(),
         ),
@@ -48,28 +49,40 @@ class _SearchPageState extends State<SearchPage> {
         toggleFavoritesUsecase: ToggleFavoritesUsecase(
           repository: context.read<Repository>(),
         ),
-      )..getSavedGitRepos(),
+      )
+        ..getSavedGitRepos(),
       child: Builder(builder: (context) {
-        return Scaffold(
-          appBar: _buildAppBar(context),
-          body: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                SearchTextField(
-                  inputController: inputController,
+        return BlocListener<SearchCubit, SearchState>(
+          listener: (context, state) {
+            if (state is SearchError) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(state.message),
                 ),
-                const SizedBox(
-                  height: 16,
-                ),
-                Expanded(
-                  child: BlocBuilder<SearchCubit, SearchState>(
-                    builder: (context, state) =>
-                        _buildScreenBody(context, state),
+              );
+            }
+          },
+          child: Scaffold(
+            appBar: _buildAppBar(context),
+            body: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  SearchTextField(
+                    inputController: inputController,
                   ),
-                )
-              ],
+                  const SizedBox(
+                    height: 16,
+                  ),
+                  Expanded(
+                    child: BlocBuilder<SearchCubit, SearchState>(
+                      builder: (context, state) =>
+                          _buildScreenBody(context, state),
+                    ),
+                  )
+                ],
+              ),
             ),
           ),
         );
@@ -138,9 +151,10 @@ class _SearchPageState extends State<SearchPage> {
             child: SearchResultList(
               gitRepos: state.gitRepositories,
               isLastPage: state.isLastPage,
-              onFinishingScroll: () => context
-                  .read<SearchCubit>()
-                  .fetchNextGitRepositories(inputController.text),
+              onFinishingScroll: () =>
+                  context
+                      .read<SearchCubit>()
+                      .fetchNextGitRepositories(inputController.text),
             ),
           ),
         ],
