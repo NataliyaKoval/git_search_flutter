@@ -2,7 +2,6 @@ import 'package:git_search/domain/models/git_repository.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
 
-// flutter packages pub run build_runner build
 part 'git_repository_entity.g.dart';
 
 @HiveType(typeId: 1)
@@ -21,7 +20,6 @@ class GitRepositoryEntity implements GitRepository {
     this.isFavorite = false,
   });
 
-  //flutter pub run build_runner build
   factory GitRepositoryEntity.fromJson(Map<String, dynamic> json) =>
       _$GitRepositoryEntityFromJson(json);
 
