@@ -8,6 +8,7 @@ import 'package:git_search/domain/repository/repository.dart';
 import 'package:git_search/presentation/favorite_screen/bloc/favorite_cubit.dart';
 import 'package:git_search/presentation/favorite_screen/use_case/get_favorites_use_case.dart';
 import 'package:git_search/presentation/favorite_screen/use_case/remove_favorite_use_case.dart';
+import 'package:git_search/presentation/widgets/empty_list_text.dart';
 import 'package:git_search/presentation/widgets/git_repo_list_item.dart';
 
 class FavoritePage extends StatelessWidget {
@@ -51,12 +52,8 @@ class FavoritePage extends StatelessWidget {
                   );
                 } else if (state is FavoriteEmpty) {
                   return Center(
-                    child: Text(
-                      AppStrings.noFavorites,
-                      textAlign: TextAlign.center,
-                      style: const TextStyle(
-                        color: AppColors.argent,
-                      ),
+                    child: EmptyListText(
+                      text: AppStrings.noFavorites,
                     ),
                   );
                 } else if (state is FavoriteLoading) {

@@ -11,4 +11,7 @@ class AppStrings {
 
   static String get noFavorites =>
       'You have no favorites.\nClick on star while searching to add first favorite';
+
+  static String get noHistory =>
+      'You have empty history.\nClick on search to start journey!';
 }

@@ -14,7 +14,10 @@ import 'package:git_search/presentation/search_screen/use_case/toggle_favorites_
 import 'package:git_search/presentation/search_screen/widget/history_list.dart';
 import 'package:git_search/presentation/search_screen/widget/search_result_list.dart';
 import 'package:git_search/presentation/search_screen/widget/search_text_field.dart';
+import 'package:git_search/presentation/widgets/empty_list_text.dart';
 import 'package:git_search/utils/debouncer.dart';
+
+import 'history_loaded_container.dart';
 
 class SearchPage extends StatefulWidget {
   const SearchPage({Key? key}) : super(key: key);
@@ -48,41 +51,7 @@ class _SearchPageState extends State<SearchPage> {
       )..getSavedGitRepos(),
       child: Builder(builder: (context) {
         return Scaffold(
-          appBar: AppBar(
-            toolbarHeight: 44,
-            backgroundColor: AppColors.ghostWhite,
-            centerTitle: true,
-            title: Text(
-              AppStrings.searchScreenTitle,
-              style: const TextStyle(color: AppColors.blackChocolate),
-            ),
-            actions: [
-              Padding(
-                padding: const EdgeInsets.only(right: 11),
-                child: Ink(
-                  decoration: BoxDecoration(
-                    color: AppColors.blue,
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: IconButton(
-                    onPressed: () => _awaitReturnValueFromFavoriteScreen(context),
-                    // onPressed: () {
-                    //   Navigator.push(
-                    //     context,
-                    //     MaterialPageRoute(
-                    //       builder: (context) => const FavoritePage(),
-                    //     ),
-                    //   );
-                    // },
-                    icon: SvgPicture.asset(
-                      ImageAssets.star,
-                      color: AppColors.ghostWhite,
-                    ),
-                  ),
-                ),
-              )
-            ],
-          ),
+          appBar: _buildAppBar(context),
           body: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
             child: Column(
@@ -96,64 +65,8 @@ class _SearchPageState extends State<SearchPage> {
                 ),
                 Expanded(
                   child: BlocBuilder<SearchCubit, SearchState>(
-                    builder: (BuildContext context, SearchState state) {
-                      if (state is HistoryLoaded) {
-                        return Column(
-                          mainAxisSize: MainAxisSize.min,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              AppStrings.searchHistory,
-                              style: const TextStyle(
-                                color: AppColors.blue,
-                                fontSize: 16,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                            const SizedBox(
-                              height: 20,
-                            ),
-                            Expanded(
-                              child: HistoryList(
-                                gitRepositories: state.gitRepositories,
-                              ),
-                            ),
-                          ],
-                        );
-                      } else if (state is SearchLoaded) {
-                        return Column(
-                          mainAxisSize: MainAxisSize.min,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              AppStrings.whatHaveFound,
-                              style: const TextStyle(
-                                color: AppColors.blue,
-                                fontSize: 16,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                            const SizedBox(
-                              height: 20,
-                            ),
-                            Expanded(
-                              child: SearchResultList(
-                                gitRepos: state.gitRepositories,
-                                isLastPage: state.isLastPage,
-                                onFinishingScroll: () => context
-                                    .read<SearchCubit>()
-                                    .fetchNextGitRepositories(
-                                        inputController.text),
-                              ),
-                            ),
-                          ],
-                        );
-                      } else if (state is SearchLoading) {
-                        return const Center(child: CircularProgressIndicator());
-                      } else {
-                        return Container();
-                      }
-                    },
+                    builder: (context, state) =>
+                        _buildScreenBody(context, state),
                   ),
                 )
               ],
@@ -164,6 +77,81 @@ class _SearchPageState extends State<SearchPage> {
     );
   }
 
+  PreferredSizeWidget? _buildAppBar(BuildContext context) {
+    return AppBar(
+      toolbarHeight: 44,
+      backgroundColor: AppColors.ghostWhite,
+      centerTitle: true,
+      title: Text(
+        AppStrings.searchScreenTitle,
+        style: const TextStyle(color: AppColors.blackChocolate),
+      ),
+      actions: [
+        Padding(
+          padding: const EdgeInsets.only(right: 11),
+          child: Ink(
+            decoration: BoxDecoration(
+              color: AppColors.blue,
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: IconButton(
+              onPressed: () => _awaitReturnValueFromFavoriteScreen(context),
+              icon: SvgPicture.asset(
+                ImageAssets.star,
+                color: AppColors.ghostWhite,
+              ),
+            ),
+          ),
+        )
+      ],
+    );
+  }
+
+  Widget _buildScreenBody(BuildContext context, SearchState state) {
+    if (state is HistoryLoaded) {
+      return HistoryLoadedContainer(
+        gitRepositories: state.gitRepositories,
+      );
+    } else if (state is HistoryEmpty) {
+      return Center(
+        child: EmptyListText(
+          text: AppStrings.noHistory,
+        ),
+      );
+    } else if (state is SearchLoaded) {
+      return Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            AppStrings.whatHaveFound,
+            style: const TextStyle(
+              color: AppColors.blue,
+              fontSize: 16,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+          const SizedBox(
+            height: 20,
+          ),
+          Expanded(
+            child: SearchResultList(
+              gitRepos: state.gitRepositories,
+              isLastPage: state.isLastPage,
+              onFinishingScroll: () => context
+                  .read<SearchCubit>()
+                  .fetchNextGitRepositories(inputController.text),
+            ),
+          ),
+        ],
+      );
+    } else if (state is SearchLoading) {
+      return const Center(child: CircularProgressIndicator());
+    } else {
+      return Container();
+    }
+  }
+
   void _awaitReturnValueFromFavoriteScreen(BuildContext context) async {
     if (!context.mounted) return;
     final List<int> result = await Navigator.push(
@@ -171,7 +159,6 @@ class _SearchPageState extends State<SearchPage> {
         MaterialPageRoute(
           builder: (context) => const FavoritePage(),
         ));
-    print(result);
     if (result.isNotEmpty) {
       context.read<SearchCubit>().updateListAfterRemovingFavorites(result);
     }
