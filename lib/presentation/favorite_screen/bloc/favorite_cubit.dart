@@ -19,21 +19,32 @@ class FavoriteCubit extends Cubit<FavoriteState> {
   List<int> removedFavoriteIndexes = [];
 
   Future<void> getFavorites() async {
-    List<GitRepository> favorites = await getFavoritesUseCase.call();
-    if (favorites.isNotEmpty) {
-      mappedFavorites = favorites
-          .map((gitRepo) => gitRepo.copyWith(isFavorite: true))
-          .toList();
-      emit(FavoriteLoaded(gitRepos: mappedFavorites));
+    emit(FavoriteLoading());
+    try {
+      List<GitRepository> favorites = await getFavoritesUseCase.call();
+      if (favorites.isNotEmpty) {
+        mappedFavorites = favorites
+            .map((gitRepo) => gitRepo.copyWith(isFavorite: true))
+            .toList();
+        emit(FavoriteLoaded(gitRepos: mappedFavorites));
+      } else if (favorites.isEmpty) {
+        emit(FavoriteEmpty());
+      }
+    } catch (e) {
+      print(e);
     }
   }
 
-  Future<void> removeFavorite (GitRepository gitRepository) async {
+  Future<void> removeFavorite(GitRepository gitRepository) async {
     removedFavoriteIndexes.add(gitRepository.id);
     try {
       removeFavoritesUsecase.call(gitRepository);
       mappedFavorites.removeWhere((element) => element.id == gitRepository.id);
-      emit(FavoriteLoaded(gitRepos: mappedFavorites));
+      if (mappedFavorites.isNotEmpty) {
+        emit(FavoriteLoaded(gitRepos: mappedFavorites));
+      } else {
+        emit(FavoriteEmpty());
+      }
     } catch (e) {
       print(e);
     }
