@@ -28,7 +28,11 @@ class SearchCubit extends Cubit<SearchState> {
   Future<void> getSavedGitRepos() async {
     try {
       List<GitRepository> savedRepos = await getSavedGitReposUseCase.call();
-      emit(HistoryLoaded(gitRepositories: savedRepos));
+      if (savedRepos.isNotEmpty) {
+        emit(HistoryLoaded(gitRepositories: savedRepos));
+      } else {
+        emit(HistoryEmpty());
+      }
     } catch (e) {
       print(e);
     }

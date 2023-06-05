@@ -5,6 +5,8 @@ abstract class SearchState {}
 
 class SearchInitial extends SearchState {}
 
+class HistoryEmpty extends SearchState {}
+
 class HistoryLoaded extends SearchState {
   HistoryLoaded({
     required this.gitRepositories,
