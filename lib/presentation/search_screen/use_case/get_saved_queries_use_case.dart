@@ -1,7 +1,7 @@
 import 'package:git_search/domain/repository/repository.dart';
 import 'package:git_search/domain/use_case/use_case.dart';
 
-class GetSavedQueriesUseCase extends NoParamsUseCase<Set<String>> {
+class GetSavedQueriesUseCase extends NoParamsUseCase<List<String>> {
   GetSavedQueriesUseCase({
     required this.repository,
   });
@@ -9,7 +9,7 @@ class GetSavedQueriesUseCase extends NoParamsUseCase<Set<String>> {
   final Repository repository;
 
   @override
-  Future<Set<String>> call() async {
+  Future<List<String>> call() async {
     return repository.getSavedQueries();
   }
 }

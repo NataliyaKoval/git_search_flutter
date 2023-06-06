@@ -43,7 +43,7 @@ class SearchCubit extends Cubit<SearchState> {
 
   Future<void> getQueriesHistory() async {
     try {
-      Set<String> queries = await getSavedQueriesUseCase.call();
+      List<String> queries = await getSavedQueriesUseCase.call();
       List<GitRepository> favorites = await getFavoritesUseCase.call();
       List<String> favoriteLogins = favorites.map((favorite) => favorite.login).toList();
       List<HistoryItem> historyItems = queries.map((query) {
