@@ -7,7 +7,7 @@ abstract class Repository {
 
   Future<void> saveQuery(String query);
 
-  Future<Set<String>> getSavedQueries();
+  Future<List<String>> getSavedQueries();
 
   void addToFavorites(GitRepository gitRepository);
 

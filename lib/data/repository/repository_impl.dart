@@ -23,12 +23,8 @@ class RepositoryImpl implements Repository {
     required int itemsCount,
     required int page,
   }) async {
-    GitRepositoryResponseEntity response =
-        await execute(() =>  restApiClient.fetchRepository(query, itemsCount, page));
-
-    // for (var item in response.items) {
-    //   localDatabase.saveSearchedGitRepos(item);
-    // }
+    GitRepositoryResponseEntity response = await execute(
+        () => restApiClient.fetchRepository(query, itemsCount, page));
 
     return response;
   }
@@ -39,7 +35,7 @@ class RepositoryImpl implements Repository {
   }
 
   @override
-  Future<Set<String>> getSavedQueries() async {
+  Future<List<String>> getSavedQueries() async {
     return localDatabase.getSavedQueries();
   }
 

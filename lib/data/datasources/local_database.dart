@@ -7,11 +7,11 @@ class LocalDatabase {
       Hive.box<GitRepositoryEntity>('favorites');
 
   void saveQuery(String query) {
-    queriesBox.add(query);
+    queriesBox.put(query, query);
   }
 
-  Set<String> getSavedQueries() {
-    return queriesBox.values.toSet();
+  List<String> getSavedQueries() {
+    return queriesBox.values.toList();
   }
 
   void addToFavorites(GitRepositoryEntity gitRepo) {
